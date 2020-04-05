@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true">
+  </head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="shortcut icon" href="index_files\fav.ico" />
+  <title>REPRATE - Help</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  small{
+    border-bottom:1px solid #d9534f;
+  }
+    .accordion {
+    background-color: #ffffff;
+    /*border:  1px solid red;*/
+    /*  color: #444;*/
+      cursor: pointer;
+      padding: 10px;
+      padding-bottom: 0px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+      transition: 0.4s;
+      font-weight: bold;
+    }
+
+    .active,
+    .accordion:hover {
+      padding: 10px;
+
+      background-color: #cccccc;
+    }
+
+    .panel {
+      padding: 0 18px;
+      display: none;
+      /*background-color: white;*/
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <!--Nav bar-->
+  <nav class="navbar navbar-light bg-danger justify-content-center">
+    <a class="navbar-brand" href="#">
+      <img src="index_files\logo.png" class="img-fluid" alt="REPRATE" height="100" width="200">
+      <b> (Alpha)</b>
+    </a>
+  </nav>
+  <nav class="navbar navbar-dark bg-dark  justify-content-center">
+    <div class="btn-group" role="group">
+      <button Onclick="window.location.href='../NEW/index.html'" type="button" class="btn btn-light block"> <img src="index_files\add.png" alt="Add New" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HOME/index.html'" type="button" class="btn btn-light block"> <img src="index_files\home.png" alt="Home" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HELP/index.html'" type="button" class="btn btn-light block"> <img src="index_files\help.png" alt="Help" Width="32" height="32"></button>
+    </div>
+  </nav>
+  <!--Body-->
+
+  <DIV CLASS="container">
+    <h3 style="padding-top:10px;">Help</h3>
+<h3><small>General</small></h3>
+    <button class="accordion">What is REPRATE?</button>
+    <div class="panel">
+      <p>REPRATE is a web app which allows you to store Beats which store the tempo for a
+      exercise using the 4 point tempo system.And manage the beats.</p>
+    </div><hr>
+
+    <button class="accordion">Why would i want REPRATE?</button>
+    <div class="panel">
+<p>If you are a weight lifter looking to maximise your results by using tempo.REPRATE is for you.</p>
+    </div><hr>
+
+    <button class="accordion">How was REPRATE developed?</button>
+    <div class="panel">
+    <p>REPRATE was developed by Sandaru Adithya in 2019.On the back end,reprate uses Nodejs,ExpresJS,Mongodb.on the front end jQuery,Sweetalert,Vanilla JS and a few other technologies were used.</p>
+    </div><hr>
+
+    <button class="accordion">Who should i contack for any inquieries?</button>
+    <div class="panel">
+    <p>Please contack sandaruadithya@gmail.com.</p>
+    </div><hr>
+<h3><small>Using REPRATE</small></h3>
+    <button class="accordion">What are the position names mean?</button>
+    <div class="panel">
+    <p>  <!--TABLE-->
+      <table class="table table-striped">
+      		<tr>
+      			<td>&nbsp;<b>Pharse name</b></td>
+      			<td >&nbsp;<b>Description</b></td>
+
+      		</tr>
+      		<tr>
+      			<td >&nbsp;Eccentrick contraction</td>
+      			<td >&nbsp;(Negetive rep)</td>
+      		</tr>
+      		<tr >
+      			<td >&nbsp;Strch position</td>
+      			<td >&nbsp;(Pause at the end of the rep)</td>
+      		</tr>
+      		<tr >
+      			<td >&nbsp;Concentrick contraction</td>
+      			<td >&nbsp;(Push/pull)</td>
+      		</tr>
+      		<tr >
+      			<td >&nbsp;Contracted position</td>
+      			<td>&nbsp;(Pause at the upper point A.K.A - Squeeze)</td>
+      		</tr>
+      </table>
+      <!--END TABLE--></p>
+    </div><hr>
+    <button class="accordion">how to add new beat?</button>
+    <div class="panel">
+    <p>Click in + button in the tool bar(top).</p>
+    </div><hr>
+
+    <button class="accordion">How to delete a beat??</button>
+    <div class="panel">
+    <p>go to Home/My beats,click on the beat to detete,click delete button.</p>
+    </div><hr>
+
+    <button class="accordion">how to play a beat?</button>
+    <div class="panel">
+    <p>goto home,click the beat you want to play,press play button.</p>
+    </div><hr>
+
+    <button class="accordion">How to edit a beat?</button>
+    <div class="panel">
+    <p>Click on the beat to edit,click edit icon in the player.</p>
+    </div><hr>
+
+    <button class="accordion">What does the voice guide mean?</button>
+    <div class="panel">
+    <p>  <table class="table table-striped">
+      		<tr>
+      			<td>&nbsp;<b>Phase</b></td>
+      			<td >&nbsp;<b>Voice instruction</b></td>
+
+      		</tr>
+      		<tr>
+      			<td >&nbsp;Eccentrick contraction</td>
+      			<td >&nbsp;Down</td>
+      		</tr>
+      		<tr >
+      			<td >&nbsp;Strch position</td>
+      			<td >&nbsp;Strech</td>
+      		</tr>
+      		<tr >
+      			<td >&nbsp;Concentrick contraction</td>
+      			<td >&nbsp;Up</td>
+      		</tr>
+      		<tr >
+      			<td >&nbsp;Contracted position</td>
+      			<td>&nbsp;squeeze</td>
+      		</tr>
+      </table></p>
+    </div><hr>
+
+    <button class="accordion">Section 3</button>
+    <div class="panel">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div><hr>
+
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "block";
+          }
+        });
+      }
+    </script>
+  </div>
+  <br>
+  <!--Footer-->
+  <nav class="navbar navbar-light bg-danger justify-content-center" style="width:100%;position:fixed;bottom:0px;">
+    <b>&copy; 2019 sandaruadithya@gmail.com</b>
+  </nav>
+</body>
+
+</html>

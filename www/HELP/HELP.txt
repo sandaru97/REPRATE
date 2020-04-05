@@ -1,0 +1,37 @@
+What is reprate
+why would i want reprate?
+how was reprate developed?
+how to contack developer in case of error or comment
+
+UNDERTANDING THE POSITION ANME
+**
+table
+
+HOW TO ADD NEW beat
+**
+click on the add button on the menu bar.
+click save when you are done
+
+HOW TO DELETE a beat
+**
+goto home by using the home button on the menu bar.
+and click on the beat you want to delete press the delete button
+and press yes im sure
+
+HOW TO PLAY/STOP
+**
+goto home using the home button on the menu bar.
+click on the beat you want to play.
+press play button
+
+How to edit
+**
+goto home by clicking on the home button on the menu bar.
+click on the beata you want to edit.
+ress the edit button.
+make the changes.
+press save to save changes.
+
+understanding the voice guide
+****
+table with playable mp3

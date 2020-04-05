@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<title>REPRATE - Home</title>
+
+<head>
+  <!------>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="HandheldFriendly" content="true">
+</head>
+<!--Import js,css-->
+<link rel="stylesheet" href="index_files\bootstrap.min.css">
+<link rel="shortcut icon" href="index_files\fav.ico" />
+<script src="index_files\jquery-3.3.1.min.js"></script>
+<script src="index_files\sweetalert2@8.js"></script>
+
+<body>
+  <!--Nav bar-->
+  <nav class="navbar navbar-light bg-danger justify-content-center">
+    <a class="navbar-brand" href="#">
+      <img src="index_files\logo.png" class="img-fluid" alt="REPRATE" height="100" width="200">
+      <b> (Alpha)</b>
+    </a>
+  </nav>
+  <nav class="navbar navbar-dark bg-dark  justify-content-center">
+    <div class="btn-group" role="group">
+      <button Onclick="window.location.href='../NEW/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\add.png" alt="Add New" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HOME/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\home.png" alt="Home" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HELP/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\help.png" alt="Help" Width="32" height="32"></button>
+    </div>
+  </nav>
+  <!--Body-->
+  <div class="container container-fluid">
+    <h3 style="padding-top:10px;">Home (My Beats)
+        <a onclick="Reset()" class="badge badge-danger">Reset</a>
+
+      </h3>
+    <B>
+      <ul class="list-group" id="listBeats">
+        <li class="list-group-item list-group-item-action">Error Loading Beats.</li>
+      </ul>
+    </b>
+
+  </div>
+  <!--Footer-->
+  <br>
+  <nav class="navbar navbar-light bg-danger justify-content-center" style="width:100%;position:fixed;bottom:0px;">
+    <b>&copy; 2019 sandaruadithya@gmail.com</b>
+  </nav>
+</body>
+<script>
+  //localStorage.setItem('beats',JSON.stringify([]));
+  /*('beats',JSON.stringify([
+    {
+        "_id": "12",
+        "name": "Leg rise hanging machine",
+        "beatString": "1111334",
+        "eccentrick": 4,
+        "strech": 0,
+        "concentrick": 2,
+        "contracted": 1,
+        "beatsPerMinute": 60,
+        "__v": 0
+    },
+    {
+        "_id": "222",
+        "name": "bench press machine",
+        "beatString": "111133",
+        "eccentrick": 4,
+        "strech": 0,
+        "concentrick": 2,
+        "contracted": 0,
+        "beatsPerMinute": 60,
+        "__v": 0
+    },
+    {
+        "_id": "333",
+        "name": "chest dip supported",
+        "beatString": "11112233",
+        "eccentrick": 4,
+        "strech": 2,
+        "concentrick": 2,
+        "contracted": 0,
+        "beatsPerMinute": 60,
+        "__v": 0
+    },
+    {
+        "_id": "444",
+        "name": "rowing machine",
+        "beatString": "1111334",
+        "eccentrick": 4,
+        "strech": 0,
+        "concentrick": 2,
+        "contracted": 1,
+        "beatsPerMinute": 60,
+        "__v": 0
+    }
+]));*/
+  function loadBeats() {
+    var beatString = localStorage.getItem('beats');
+    var beatdata = JSON.parse(beatString);
+    const entries = Object.entries(beatdata);
+    //stores the content for beat list
+    var innerHTM = "";
+    //add beats to beat
+    for (const beat of entries) {
+      console.log(beat[1].name);
+      var innerHTM = innerHTM + "<a href='../PLAYER/index.html?beat_id=" + beat[1]._id +
+        "'><li class='list-group-item list-group-item-action'>" + beat[1].name + "</li></a>";
+    }
+    console.log(innerHTM);
+    document.getElementById("listBeats").innerHTML = innerHTM;
+  }
+  loadBeats();
+</script>
+<script>
+  function Reset(){
+  Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!\n You will be taken to Home page.",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d9534f',
+      cancelButtonColor: 'silver',
+      confirmButtonText: 'Yes!'
+    }).then((result) => {
+      if (result.value) {
+        //Reset code
+          localStorage.setItem('beats',JSON.stringify([]));
+
+        window.location = "../HOME/index.html";
+      }
+    })
+    }
+</script>
+</html>

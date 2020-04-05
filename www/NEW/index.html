@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="HandheldFriendly" content="true">
+</head>
+<!--Import js,css-->
+<link rel="shortcut icon" href="index_files\fav.ico" />
+<link rel="stylesheet" href="index_files/jquery.mobile-1.4.5.min.css">
+<script src="index_files/jquery-1.11.3.min.js"></script>
+<script src="index_files/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" href="index_files/bootstrap.min.css">
+<script src="index_files/sweetalert2@8.js"></script>
+
+<title>REPRATE - New beat</title>
+
+<body>
+  <!--Nav bar-->
+  <nav class="navbar navbar-light bg-danger justify-content-center">
+    <a class="navbar-brand" href="#">
+      <img src="index_files\logo.png" class="img-fluid" alt="REPRATE" height="100" width="200">
+      <b> (Alpha)</b>
+    </a>
+  </nav>
+  <nav class="navbar navbar-dark bg-dark  justify-content-center">
+    <div class="btn-group" role="group">
+      <button Onclick="window.location.href='../NEW/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\add.png" alt="Add New" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HOME/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\home.png" alt="Home" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HELP/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\help.png" alt="Help" Width="32" height="32"></button>
+    </div>
+  </nav>
+  <!--Body-->
+  <div class="container">
+    <div class="slidecontainer">
+      <h3 style="padding-top:10px;">New Beat<small> Need<a class="text-danger" href="../HELP/index.html"
+            Onclick="window.location.href='../HELP/index.html'">Help</a>?</small></h3>
+      <form class="">
+
+        <input id="txtName" type="text" name="fname" placeholder="Beat name Ex: Shoulder Press 1">
+        Eccentrick contraction
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrEccentrick">
+        Strch position
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrStrech">
+        Concentrick contraction
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrConcentrick">
+        Contracted position
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrContracted">
+        Beats per minute (speed)
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="60" max="180"
+          value="120" class="slider" id="sdrBPM">
+      </form>
+    </div>
+    <div class="text-right">
+      <div class="btn-group" role="group">
+        <button onclick="Post1();" type="button" class="btn btn-light block "> <img src="index_files\save.png"
+            alt="Save" Width="32" height="32"></button>
+      </div>
+    </div>
+  </div>
+  <!--Footer--><br><br><br>
+
+  <nav class="navbar navbar-light bg-danger justify-content-center" style="width:100%;position:fixed;bottom:0px;">
+    <br><br>
+
+    <b>&copy; 2019 sandaruadithya@gmail.com</b>
+  </nav>
+</body>
+<script>
+    function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+}
+function getNewId(){
+  var found=false;
+  var allBeats=window.localStorage.getItem("beats");
+    var allBeatsObject=JSON.parse(allBeats);
+    var valid;
+  //console.log(allBeatsObject[1]);
+  while(found==false){
+    randomId=create_UUID();
+    valid=true;
+    for(var i=0;i<allBeatsObject.length;i++){
+if(randomId==allBeatsObject[i]._id){
+  valid=false;
+  console.log("looping");
+  break;
+}
+    }
+if(valid==true){
+  found=true;
+  console.log("checking if valid");
+
+  return randomId;
+}
+  }
+  }
+
+
+    function Post1() {
+      var name = document.getElementById("txtName").value;
+      console.log("%c" + name, 'color:red;')
+      //srtored new beat string
+      var newBeatString = "";
+      var beat_id;
+      //Generate best string
+      for (i = 0; i < document.getElementById("sdrEccentrick").value; i++) {
+        newBeatString = newBeatString + "1";
+      }
+      for (i = 0; i < document.getElementById("sdrStrech").value; i++) {
+        newBeatString = newBeatString + "2";
+      }
+      for (i = 0; i < document.getElementById("sdrConcentrick").value; i++) {
+        newBeatString = newBeatString + "3";
+      }2
+      for (i = 0; i < document.getElementById("sdrContracted").value; i++) {
+        newBeatString = newBeatString + "4";
+      }
+      console.log(newBeatString);
+      //const Http = new XMLHttpRequest();
+      //const url = "http://localhost:8080/api/Beats?name="+document.getElementById(txtName).value+"&BeatString=uuhdddh@&Eccentric="+document.getElementById(sdrEccentrick).value+
+      //"&Strech="+document.getElementById(sdrStrech).value+"&Concentric="+document.getElementById(sdrConcentrick).value+"&Contracted="+document.getElementById(sldContracted).value+"&BPM="+document.getElementById(sdrBPM).value;
+    /*var url = "http://localhost:8080/api/Beats?Name=" + document.getElementById("txtName").value +
+        "&BeatString=" + newBeatString + "&Eccentric=" + document.getElementById("sdrEccentrick").value +
+        "&Strech=" + document.getElementById("sdrStrech").value + "&Concentric=" + document.getElementById(
+          "sdrConcentrick").value +
+        "&Contracted=" + document.getElementById("sdrContracted").value + "&BPM=" + document.getElementById("sdrBPM")
+        .value;*/
+        var id=getNewId();
+        
+      //alert(id); 
+
+        var newBeat=new Object();
+        newBeat._id=id;
+        newBeat.beatsPerMinute=document.getElementById("sdrBPM").value;
+        newBeat.concentrick=document.getElementById("sdrConcentrick").value;
+        newBeat.beatString=newBeatString;
+        newBeat.strech=document.getElementById("sdrStrech").value;
+        newBeat.name=document.getElementById("txtName").value;
+        newBeat.eccentrick=document.getElementById("sdrEccentrick").value;
+      newBeat.contracted=document.getElementById("sdrContracted").value;
+      console.log(newBeat);  
+      var allBeats=window.localStorage.getItem("beats");
+      allBeats=JSON.parse(allBeats);
+      allBeats.push(newBeat);
+      allBeats=JSON.stringify(allBeats);
+      window.localStorage.setItem("beats",allBeats);
+      //Http.open("POST", url);
+      //Http.send();
+      
+      //location.reload();
+      //window.close();
+      Swal.fire({
+        type: 'success',
+        title: 'Added!',
+        text: 'Beat added successfully!You will be taken to Home/My beats!',
+        confirmButtonColor: '#d9534f',
+  
+      }).then((result) => {
+        if (result.value) {
+          //const Http = new XMLHttpRequest();
+          //const url1 = "http://localhost:8080/api/Beats/delete/l?beat_id=" + getAllUrlParams(document.URL).beat_id;
+          //Http.open("DELETE", url1);
+          //Http.send();
+          window.location = "../HOME/index.html";
+        }
+      })
+    }
+
+  </script>
+</html>

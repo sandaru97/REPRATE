@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="HandheldFriendly" content="true">
+</head>
+<!--Import js,css-->
+<link rel="shortcut icon" href="index_files\fav.ico" />
+<link rel="stylesheet" href="index_files/jquery.mobile-1.4.5.min.css">
+<script src="index_files/jquery-1.11.3.min.js"></script>
+<script src="index_files/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" href="index_files/bootstrap.min.css">
+<script src="index_files/sweetalert2@8.js"></script>
+
+
+<title>REPRATE - Edit Beat</title>
+
+<body onload="refreshForm();">
+  <!--Nav bar-->
+  <nav class="navbar navbar-light bg-danger justify-content-center">
+    <a class="navbar-brand" href="#">
+      <img src="index_files\logo.png" class="img-fluid" alt="REPRATE" height="100" width="200">
+      <b> (Alpha)</b>
+    </a>
+  </nav>
+  <nav class="navbar navbar-dark bg-dark  justify-content-center">
+    <div class="btn-group" role="group">
+      <button Onclick="window.location.href='../NEW/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\add.png" alt="Add New" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HOME/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\home.png" alt="Home" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HELP/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\help.png" alt="Help" Width="32" height="32"></button>
+    </div>
+  </nav>
+  <!--Body-->
+  <div class="container">
+    <div class="slidecontainer">
+      <h3 style="padding-top:10px;" id="lblTitle">Error loading the beat!<small> Need<a class="text-danger"
+            href="../HELP/index.html">Help</a>?</small></h3>
+      <form class="">
+
+        <input id="txtName" type="text" name="fname" placeholder="Beat name">
+        Eccentrick contraction
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrEccentrick">
+        Strch position
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrStrech">
+        Concentrick contraction
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrConcentrick">
+        Contracted position
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="0" max="6"
+          value="0" class="slider" id="sdrContracted">
+        Beats per minute (speed)
+        <input style="background-color:	#d9534f;color:white;" data-show-value="true" type="range" min="60" max="180"
+          value="120" class="slider" id="sdrBPM" class="sdrBPM">
+      </form>
+    </div>
+    <div class="text-right">
+      <div class="btn-group" role="group">
+        <button onclick="Post1();" type="button" class="btn btn-light block "> <img src="index_files\save.png"
+            alt="Save" Width="32" height="32"></button>
+      </div>
+    </div>
+  </div>
+  <!--Footer--><br><br><br>
+
+  <nav class="navbar navbar-light bg-danger justify-content-center" style="width:100%;position:fixed;bottom:0px;">
+    <br><br>
+
+    <b>&copy; 2019 sandaruadithya@gmail.com</b>
+  </nav>
+</body>
+<script>
+  //load beat,then post beat
+  var beatData;
+  //var beatData;
+  var url = document.URL;
+  //Function retuns object (all parameter)
+  function getAllUrlParams(url) {
+    // get query string from url (optional) or window
+    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+    // we'll store the parameters here
+    var obj = {};
+    // if query string exists
+    if (queryString) {
+      // stuff after # is not part of query string, so get rid of it
+      queryString = queryString.split('#')[0];
+      // split our query string into its component parts
+      var arr = queryString.split('&');
+      for (var i = 0; i < arr.length; i++) {
+        // separate the keys and the values
+        var a = arr[i].split('=');
+        // set parameter name and value (use 'true' if empty)
+        var paramName = a[0];
+        var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+        // (optional) keep case consistent
+        paramName = paramName.toLowerCase();
+        if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+        // if the paramName ends with square brackets, e.g. colors[] or colors[2]
+        if (paramName.match(/\[(\d+)?\]$/)) {
+          // create key if it doesn't exist
+          var key = paramName.replace(/\[(\d+)?\]/, '');
+          if (!obj[key]) obj[key] = [];
+          // if it's an indexed array e.g. colors[2]
+          if (paramName.match(/\[\d+\]$/)) {
+            // get the index value and add the entry at the appropriate position
+            var index = /\[(\d+)\]/.exec(paramName)[1];
+            obj[key][index] = paramValue;
+          } else {
+            // otherwise add the value to the end of the array
+            obj[key].push(paramValue);
+          }
+        } else {
+          // we're dealing with a string
+          if (!obj[paramName]) {
+            // if it doesn't exist, create property
+            obj[paramName] = paramValue;
+          } else if (obj[paramName] && typeof obj[paramName] === 'string') {
+            // if property does exist and it's a string, convert it to an array
+            obj[paramName] = [obj[paramName]];
+            obj[paramName].push(paramValue);
+          } else {
+            // otherwise add the property
+            obj[paramName].push(paramValue);
+          }
+        }
+      }
+    }
+    return obj;
+  }
+
+  function loadBeat() {
+    //***********************
+    // const Http = new XMLHttpRequest();
+    //const url1 = "http://localhost:8080/api/beats/get/kk?beat_id=" + getAllUrlParams(document.URL).beat_id;
+    // Http.open("GET", url1);
+    //Http.send();
+    // Http.onload = funct;
+    //Http onLoad
+    funct();
+
+    function funct() {
+      var allBeats = window.localStorage.getItem("beats");
+      allBeats = JSON.parse(allBeats);
+      for (var i = 0; i < allBeats.length; i++) {
+        if (getAllUrlParams(document.URL).beat_id == allBeats[i]._id) {
+          console.log(allBeats[i] + "found");
+          beatData = allBeats[i];
+          break;
+        }
+      }
+      //beatData = jQuery.parseJSON(Http.responseText);
+      console.log(beatData);
+
+    }
+    console.log(beatData);
+  }
+
+  function Post1() {
+    var name = document.getElementById("txtName").value;
+    console.log("%c" + name, 'color:red;')
+    //srtored new beat string
+    var newBeatString = "";
+    var beat_id;
+    //Generate best string
+    for (i = 0; i < document.getElementById("sdrEccentrick").value; i++) {
+      newBeatString = newBeatString + "1";
+    }
+    for (i = 0; i < document.getElementById("sdrStrech").value; i++) {
+      newBeatString = newBeatString + "2";
+    }
+    for (i = 0; i < document.getElementById("sdrConcentrick").value; i++) {
+      newBeatString = newBeatString + "3";
+    }
+    for (i = 0; i < document.getElementById("sdrContracted").value; i++) {
+      newBeatString = newBeatString + "4";
+    }
+    console.log(newBeatString);
+    const Http = new XMLHttpRequest();
+    //******************
+    var allBeats = window.localStorage.getItem("beats");
+    allBeats = JSON.parse(allBeats);
+    for (var i = 0; i < allBeats.length; i++) {
+      if (getAllUrlParams(document.URL).beat_id == allBeats[i]._id) {
+        console.log(allBeats[i] + "found");
+        //beatData=allBeats[i];
+
+        //alert(id); 
+
+        //var newBeat=new Object();
+        allBeats[i]._id = getAllUrlParams(document.URL).beat_id;
+        allBeats[i].beatsPerMinute = document.getElementById("sdrBPM").value;
+        allBeats[i].concentrick = document.getElementById("sdrConcentrick").value;
+        allBeats[i].beatString = newBeatString;
+        allBeats[i].strech = document.getElementById("sdrStrech").value;
+        allBeats[i].name = document.getElementById("txtName").value;
+        allBeats[i].eccentrick = document.getElementById("sdrEccentrick").value;
+        allBeats[i].contracted = document.getElementById("sdrContracted").value;
+        //console.log(newBeat);  
+   //var allBeats = window.localStorage.getItem("beats");
+       // allBeats = JSON.parse(allBeats);
+       // allBeats.push(newBeat);
+       // allBeats = JSON.stringify(allBeats);
+       console.log(allBeats[i]._id);
+allBeats=JSON.stringify(allBeats);
+        window.localStorage.setItem("beats", allBeats);
+        break;
+      }
+    }
+    //***************
+    //const url = "http://localhost:8080/api/Beats?name="+document.getElementById(txtName).value+"&BeatString=uuhdddh@&Eccentric="+document.getElementById(sdrEccentrick).value+
+    //"&Strech="+document.getElementById(sdrStrech).value+"&Concentric="+document.getElementById(sdrConcentrick).value+"&Contracted="+document.getElementById(sldContracted).value+"&BPM="+document.getElementById(sdrBPM).value;
+   /*var url = "http://localhost:8080/api/beats/put/kk?beat_id=" + getAllUrlParams(document.URL).beat_id + "&Name=" +
+      document.getElementById("txtName").value +
+      "&BeatString=" + newBeatString + "&Eccentric=" + document.getElementById("sdrEccentrick").value +
+      "&Strech=" + document.getElementById("sdrStrech").value + "&Concentric=" + document.getElementById(
+        "sdrConcentrick").value +
+      "&Contracted=" + document.getElementById("sdrContracted").value + "&BPM=" + document.getElementById("sdrBPM")
+      .value;
+    Http.open("PUT", url);
+    Http.send();*/
+    //location.reload();
+    //window.close();
+    Swal.fire({
+      type: 'success',
+      title: 'Saved!',
+      text: 'Beat saved successfully! You will be taken bakc to home/my beats!',
+      confirmButtonColor: '#d9534f',
+
+    }).then((result) => {
+      if (result.value) {
+        //const Http = new XMLHttpRequest();
+        //const url1 = "http://localhost:8080/api/Beats/delete/l?beat_id=" + getAllUrlParams(document.URL).beat_id;
+        //Http.open("DELETE", url1);
+        //Http.send();
+        window.location = "../HOME/index.html";
+      }
+    })
+  }
+  loadBeat();
+
+  function refreshForm() {
+    document.getElementById("lblTitle").innerHTML = "Edit - " + beatData.name;
+    document.getElementById("txtName").value = beatData.name;
+
+    //document.getElementById("sdrBPM").value = beatData.beatsPerMinute;
+    $('#sdrBPM').val(beatData.beatsPerMinute);
+    $('#sdrBPM').slider('refresh');
+    $('#sdrEccentrick').val(beatData.eccentrick);
+    $('#sdrEccentrick').slider('refresh');
+    $('#sdrStrech').val(beatData.strech);
+    $('#sdrStrech').slider('refresh');
+    $('#sdrConcentrick').val(beatData.concentrick);
+    $('#sdrConcentrick').slider('refresh');
+    $('#sdrContracted').val(beatData.contracted);
+    $('#sdrContracted').slider('refresh');
+  }
+</script>
+
+</html>

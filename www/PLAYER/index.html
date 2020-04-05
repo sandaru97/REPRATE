@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="HandheldFriendly" content="true">
+</head>
+<!--Import js,css-->
+<link rel="stylesheet" href="index_files\bootstrap.min.css">
+<link rel="shortcut icon" href="index_files\fav.ico" />
+<title>REPRATE - Play Beat</title>
+<script src="index_files\jquery.min.js"></script>
+<script src="index_files\sweetalert2@8.js"></script>
+
+<body onload="Play_pause();">
+  <!--Nav bar-->
+  <nav class="navbar navbar-light bg-danger justify-content-center">
+    <a class="navbar-brand" href="#">
+      <img src="index_files\logo.png" class="img-fluid" alt="REPRATE" height="100" width="200">
+      <b> (Alpha)</b>
+    </a>
+  </nav>
+  <nav class="navbar navbar-dark bg-dark  justify-content-center">
+    <div class="btn-group" role="group">
+      <button Onclick="window.location.href='../NEW/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\add.png" alt="Add New" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HOME/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\home.png" alt="Home" Width="32" height="32"></button>
+      <button Onclick="window.location.href='../HELP/index.html'" type="button" class="btn btn-light block"> <img
+          src="index_files\help.png" alt="Help" Width="32" height="32"></button>
+    </div>
+  </nav>
+  <!--Body-->
+  <div class="container">
+    <center>
+      <h3 style="padding-top:5px;" id="lblTitle">Error loading the beat!</h3>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-light block" id="btnPlay" onclick="Play_pause();"> <img
+            src="index_files\stop.png" alt="Play" Width="32" height="32"></button>
+        <button onclick="editBeat();" type="button" class="btn btn-light block"> <img src="index_files\edit.png"
+            alt="Edit" Width="32" height="32"></button>
+
+        <button onclick="deleteBeat();" type="button" class="btn btn-light block"> <img src="index_files\delete.png"
+            alt="Pause" Width="32" height="32"></button>
+
+      </div>
+      <br>
+
+      <img id="imgMain" class="img-thumbnail" width="80%" style="margin-bottom:10px;height:250px;width:auto;"
+        src="index_files\default.png">
+    </center>
+  </div>
+  <!--Footer-->
+  <nav class="navbar navbar-light bg-danger justify-content-center" style="width:100%;position:fixed;bottom:0px;">
+    <b>&copy; 2019 sandaruadithya@gmail.com</b>
+  </nav>
+
+</body>
+
+
+
+<!--Play/stop button code-->
+<script>
+  var Play = 1;
+  //stop();
+  //play1();
+  console.log("Playing....");
+
+  function Play_pause() {
+    if (Play == 1) {
+      stop();
+      document.getElementById("btnPlay").innerHTML =
+        "<img src='index_files/play.png' alt='Play' Width='32' height='32'>";
+      Play = 0;
+    } else {
+      document.getElementById("btnPlay").innerHTML =
+        "<img src='index_files/stop.png' alt='Stop' Width='32' height='32'>";
+      Play = 1;
+      console.log("Playing....");
+      play1();
+
+    }
+  }
+</script>
+<!--Style for tool tip-->
+<!--Scripts to get beat-->
+<script>
+  function editBeat() {
+    window.location = "../EDIT/index.html?beat_id=" + getAllUrlParams(document.URL).beat_id;
+
+  }
+  //DELETE THE BEAT FUNCTION
+  function deleteBeat() {
+    //Use sweet alery to confirm delete
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!\n You will be taken to Home page.",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d9534f',
+      cancelButtonColor: 'silver',
+      confirmButtonText: 'Yes!'
+    }).then((result) => {
+      if (result.value) {
+        //Delete code
+        console.log("DELETE");
+        var allBeats = window.localStorage.getItem("beats");
+        allBeats = JSON.parse(allBeats);
+        for (var i = 0; i < allBeats.length; i++) {
+          console.log("looping...");
+          if (allBeats[i]._id == getAllUrlParams(document.URL).beat_id) {
+            allBeats.splice(i, 1);
+            console.log("delete match found");
+            break;
+          }
+        }
+        console.log(allBeats);
+        window.localStorage.setItem("beats", JSON.stringify(allBeats));
+        window.location = "../HOME/index.html";
+      }
+    })
+
+  }
+
+  var beatData;
+  var BPM1;
+  var url = document.URL;
+  //Function retuns object (all parameter)
+  function getAllUrlParams(url) {
+    // get query string from url (optional) or window
+    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+    // we'll store the parameters here
+    var obj = {};
+    // if query string exists
+    if (queryString) {
+      // stuff after # is not part of query string, so get rid of it
+      queryString = queryString.split('#')[0];
+      // split our query string into its component parts
+      var arr = queryString.split('&');
+      for (var i = 0; i < arr.length; i++) {
+        // separate the keys and the values
+        var a = arr[i].split('=');
+        // set parameter name and value (use 'true' if empty)
+        var paramName = a[0];
+        var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+        // (optional) keep case consistent
+        paramName = paramName.toLowerCase();
+        if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+        // if the paramName ends with square brackets, e.g. colors[] or colors[2]
+        if (paramName.match(/\[(\d+)?\]$/)) {
+          // create key if it doesn't exist
+          var key = paramName.replace(/\[(\d+)?\]/, '');
+          if (!obj[key]) obj[key] = [];
+          // if it's an indexed array e.g. colors[2]
+          if (paramName.match(/\[\d+\]$/)) {
+            // get the index value and add the entry at the appropriate position
+            var index = /\[(\d+)\]/.exec(paramName)[1];
+            obj[key][index] = paramValue;
+          } else {
+            // otherwise add the value to the end of the array
+            obj[key].push(paramValue);
+          }
+        } else {
+          // we're dealing with a string
+          if (!obj[paramName]) {
+            // if it doesn't exist, create property
+            obj[paramName] = paramValue;
+          } else if (obj[paramName] && typeof obj[paramName] === 'string') {
+            // if property does exist and it's a string, convert it to an array
+            obj[paramName] = [obj[paramName]];
+            obj[paramName].push(paramValue);
+          } else {
+            // otherwise add the property
+            obj[paramName].push(paramValue);
+          }
+        }
+      }
+    }
+    return obj;
+  }
+  //console.log(getAllUrlParams(document.URL).beatstring);
+  //*********************************
+  /*const Http = new XMLHttpRequest();
+  const url1 = "http://localhost:8080/api/beats/get/kk?beat_id=" + getAllUrlParams(document.URL).beat_id;
+  Http.open("GET", url1);
+  Http.send();
+  Http.onload = funct;
+  */
+  var beatString1;
+  var BPM1;
+  var beatData;
+  var tempBeat;
+  var loadedBeat;
+  var allBeats = window.localStorage.getItem("beats");
+  var allBeatsObject = JSON.parse(allBeats);
+  //console.log(allBeatsObject[1]);
+  for (var i = 0; i < allBeatsObject.length; i++) {
+    console.log("looping");
+    if (allBeatsObject[i]._id == getAllUrlParams(document.URL).beat_id) {
+      //console.log("MATCH"+allBeatsObject[i]._id);
+      beatData = allBeatsObject[i];
+      break;
+    }
+  }
+  funct();
+  //Http onLoad
+  function funct() {
+    //beatData = tempBeat;
+    //console.log(beatData+"**");
+    document.getElementById("lblTitle").innerHTML = beatData.name;
+    beatString1 = beatData.beatString;
+    BPM1 = beatData.beatsPerMinute;
+    console.log(beatData);
+
+  }
+</script>
+<!--Player script-->
+
+<!--Acripts to play sounds-->
+<script>
+  //_________________________
+  function playSoundUp() {
+    document.getElementById("imgMain").src = "index_files/up.jpg";
+
+    var audio = document.createElement('audio');
+    audio.style.display = "none";
+    audio.src = "index_files/up.mp3";
+    audio.autoplay = true;
+    audio.onended = function () {
+      audio.remove() //Remove when played.
+    };
+    document.body.appendChild(audio);
+    audio.play();
+    //alert("play up called");
+  }
+
+  function playSoundDown() {
+    document.getElementById("imgMain").src = "index_files/Down.jpg";
+    var audio = document.createElement('audio');
+    audio.style.display = "none";
+    audio.src = "index_files/down.mp3";
+    audio.autoplay = true;
+    audio.onended = function () {
+      audio.remove() //Remove when played.
+    };
+    document.body.appendChild(audio);
+  }
+
+  function playSoundSqueeze() {
+    document.getElementById("imgMain").src = "index_files/Squeeze.png";
+
+    var audio = document.createElement('audio');
+    audio.style.display = "none";
+    audio.src = "index_files/Squeeze.mp3";
+    audio.autoplay = true;
+    audio.onended = function () {
+      audio.remove() //Remove when played.
+    };
+    document.body.appendChild(audio);
+  }
+
+  function playSoundStrech() {
+    document.getElementById("imgMain").src = "index_files/Strech.png";
+
+    var audio = document.createElement('audio');
+    audio.style.display = "none";
+    audio.src = "index_files/Strech.mp3";
+    audio.autoplay = true;
+    audio.onended = function () {
+      audio.remove() //Remove when played.
+    };
+    document.body.appendChild(audio);
+  }
+  //  playSoundDown();
+</script>
+<script>
+  var beatString;
+  var BPM;
+  var i = 0;
+  var interval = 1000 * 60 / BPM;
+  var playLoop;
+
+  function stop() {
+    clearInterval(playLoop);
+  }
+
+  function play1() {
+    beatString = beatString1;
+    BPM = BPM1;
+    var interval = 1000 * 60 / BPM;
+    console.log(BPM);
+
+    i = 0;
+    playLoop = setInterval(functPlay, interval);
+  }
+
+  function functPlay() {
+    var char = beatString[i];
+    if (char == "1") {
+      playSoundDown();
+    }
+    if (char == "2") {
+      playSoundStrech();
+      //alert("2");
+
+    }
+    if (char == "3") {
+      playSoundUp();
+
+    }
+    if (char == "4") {
+      playSoundSqueeze();
+    }
+    i++;
+    if (i == beatString.length) {
+      i = 0;
+    }
+  }
+</script>
+
+</html>
